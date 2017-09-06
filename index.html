@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            font-family: "Microsoft YaHei", "weiruanyahei";
+        }
+        
+        .ball {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            border-radius: 50%;
+            position: relative;
+            top: 0;
+            transition: 0.2s;
+            background: radial-gradient(circle at 50% 120%, #81e8f6, #76deef 10%, #055194 80%, #062745 100%);
+        }
+        
+        .ball:before {
+            content: "";
+            position: absolute;
+            top: 1%;
+            left: 5%;
+            width: 90%;
+            height: 90%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 0px, #ffffff, rgba(255, 255, 255, 0) 58%);
+            -webkit-filter: blur(5px);
+            z-index: 2;
+        }
+        
+        .ball .shadow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0) 50%);
+            -webkit-transform: rotateX(90deg) translateZ(-150px);
+            -moz-transform: rotateX(90deg) translateZ(-150px);
+            -ms-transform: rotateX(90deg) translateZ(-150px);
+            -o-transform: rotateX(90deg) translateZ(-150px);
+            transform: rotateX(90deg) translateZ(-150px);
+            z-index: -1;
+        }
+        
+        .stage {
+            width: 70px;
+            height: 70px;
+            display: inline-block;
+            margin: 20px;
+            -webkit-perspective: 1200px;
+            -moz-perspective: 1200px;
+            -ms-perspective: 1200px;
+            -o-perspective: 1200px;
+            perspective: 1200px;
+            -webkit-perspective-origin: 50% 50%;
+            -moz-perspective-origin: 50% 50%;
+            -ms-perspective-origin: 50% 50%;
+            -o-perspective-origin: 50% 50%;
+            perspective-origin: 50% 50%;
+            position: absolute;
+            left: 50%;
+            top: 38%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+        }
+        
+        .stage .img1,
+        .stage .img2 {
+            width: 70px;
+            height: 70px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            opacity: 0;
+            transition: 0.2s;
+        }
+        
+        .stage .img2 {
+            width: 50px;
+            height: 50px;
+            top: 10px;
+            left: 10px;
+            opacity: 0.2;
+            box-shadow: 0 0 10px 10px rgba(255, 255, 255, .7) inset
+        }
+        
+        body {
+            overflow: hidden;
+            position: relative;
+        }
+        
+        img.main {
+            width: 100%;
+            position: relative;
+            z-index: 0;
+        }
+        
+        .wrapper {
+            height: 100%;
+            background-color: white;
+        }
+        
+        .circal {
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            background-color: red;
+            border-radius: 50%;
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%)
+        }
+        
+        .p1,
+        .p2,
+        .p3,
+        .p4 {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            position: absolute;
+            opacity: 0;
+            transition: 0.3s;
+            left: 0;
+            top: 0;
+        }
+        
+        p {
+            height: 70px;
+            line-height: 70px;
+            position: absolute;
+            left: 50%;
+            top: 10vh;
+            padding-left: 70px;
+            margin: 0 auto;
+            width: 220px;
+            margin-left: -110px;
+        }
+        
+        p span {
+            display: inline-block;
+            height: 70px;
+            line-height: 70px;
+            margin-left: 5px;
+            font-size: 20px;
+            color: #f0f0f0;
+        }
+        
+        .replay {
+            position: fixed;
+            bottom: 2vh;
+            right: 2vh;
+            font-size: 30px;
+            color: #f31717;
+            font-weight: 700;
+            display: none;
+        }
+        
+        .toptic {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            z-index: 10;
+            width: 280px;
+            border-radius: 8px;
+        }
+        
+        .tit {
+            border-bottom: 1px solid gray;
+            padding-bottom: 10px;
+        }
+        
+        strong {
+            font-weight: 700;
+            color: red;
+            font-size: 30px;
+        }
+        
+        .mask {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .yes {
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .tips {
+            position: fixed;
+            bottom: 8vh;
+            left: 0;
+            padding: 0 10px;
+            font-size: 16px;
+            color: #0284a6;
+            font-weight: 600;
+        }
+        
+        .em {
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 180px;
+            color: whitesmoke;
+            ;
+        }
+        
+        .em span {
+            display: inline-block;
+        }
+        
+        .em em {
+            margin: 0 5px;
+            font-size: 30px;
+            font-weight: 600;
+            vertical-align: sub;
+        }
+        
+        .real {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            color: white;
+            z-index: 11;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <img src="./ice.JPG" alt="" class="main">
+        <section class="mask">
+            <div class="toptic">
+                <div class="tit">
+                    可爱鬼要过节,所以你需要按住水晶球<strong>0.715</strong>秒,水晶球将告诉你谁才是最可爱的人儿！
+                </div>
+                <div class="yes">确定</div>
+            </div>
+        </section>
+        <div class="tips">
+            tips:请在水晶球掉到地上之前完成任务,否则水晶球会失去魔力,现出原形！
+        </div>
+
+        <section class="stage">
+            <figure class="ball"><span class="shadow"></span></figure>
+            <img src="./p6.jpg" alt="" class="img1">
+            <img src="./pp.png" alt="" class="img2">
+            <div class="em">
+                <span>你按了<em>0</em>秒</span>
+            </div>
+        </section>
+
+        <div>
+            <p>
+                <img src="./p1.jpg" alt="" class="p1">
+                <img src="./p2.jpg" alt="" class="p2">
+                <img src="./p3.jpg" alt="" class="p3">
+                <img src="./p4.jpg" alt="" class="p4"> <span>是最可爱滴人儿吗?</span>
+            </p>
+        </div>
+
+        <em></em>
+        <span class="real">
+            <i></i>
+        </span>
+        <div class="replay">
+            replay
+        </div>
+
+    </div>
+    <script>
+        var cc = document.getElementsByClassName('ball')[0];
+        var cc1 = document.getElementsByClassName('img1')[0];
+        var cc2 = document.getElementsByClassName('img2')[0];
+        var card = document.getElementsByClassName('card')[0];
+        var rp = document.getElementsByClassName('replay')[0];
+        var yes = document.getElementsByClassName('yes')[0];
+        var tit = document.getElementsByClassName('tit')[0];
+        var mask = document.getElementsByClassName('mask')[0];
+        var p = document.getElementsByTagName('p')[0];
+        var i = document.getElementsByTagName('i')[0];
+        var em = document.getElementsByTagName('em')[0];
+        var num = 0;
+        var real = 0;
+        var time, oldtime, newtime;
+        var item = 'p1'
+        i.innerHTML = num;
+
+        function showitem() {
+            var target = document.getElementsByClassName(item)[0]
+            target.style.opacity = 0.7;
+        }
+
+        function hideitem() {
+            var targetdis = document.getElementsByClassName(item)[0]
+            targetdis.style.opacity = 0;
+        }
+
+        function show() {
+            card.style = 'display:block'
+        }
+        cc.addEventListener(
+            'touchstart', () => {
+                item = 'p' + parseInt(Math.random() * 4 + 1)
+                oldtime = new Date();
+                showitem();
+            }, false
+        )
+        cc.addEventListener(
+            'touchend', () => {
+                newtime = new Date();
+                time = newtime - oldtime;
+                time = (time / 1000).toFixed(3)
+                num++;
+                real++;
+                cc.style.top = num * 25 + 'px';
+                cc1.style.top = num * 25 + 'px';
+                cc2.style.top = num * 25 + 10 + 'px';
+                em.innerText = time;
+                i.innerHTML = real;
+                // show();
+                hideitem();
+                if (num == 6) {
+                    cc.style.opacity = 0;
+                    rp.style.display = 'block';
+                    cc1.style.opacity = 1;
+                    cc2.style.opacity = 0;
+                }
+                if (time == 0.715) {
+                    mask.style.display = 'block';
+                    tit.innerHTML = '哇,这你也按得到,请截图保存后发我领奖！'
+                    yes.innerHTML = '随便挑'
+                    yes.addEventListener('click', () => {
+                        window.location.href = "http://www.taobao.com"
+                    }, false)
+
+                }
+            }, false
+        )
+        rp.addEventListener(
+            'click', () => {
+                num = 0;
+                cc.style.opacity = 1;
+                cc.style.top = 0;
+                cc1.style.top = 0;
+                cc1.style.opacity = 0;
+                cc2.style.opacity = 0.3;
+                cc2.style.top = 10 + 'px';
+                rp.style.display = 'none'
+            }
+        )
+        mask.addEventListener(
+            'click', () => [
+                mask.style.display = 'none'
+            ]
+        )
+    </script>
+</body>
+
+</html>
