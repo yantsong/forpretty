@@ -336,7 +336,7 @@
             'touchend', () => {
                 newtime = new Date();
                 time = newtime - oldtime;
-                time = (time / 1000).toFixed(3)
+                time = (time / 1000).toFixed(2)
                 num++;
                 real++;
                 cc.style.top = num * 25 + 'px';
@@ -354,7 +354,7 @@
                 }
                 if (time == 0.97) {
                     mask.style.display = 'block';
-                    tit.innerHTML = '哇,这你也按得到,请截图保存后发我领奖！'
+                    tit.innerHTML = '么么哒,生日快乐,妹！截图保存后发我领奖！'
                     yes.innerHTML = '随便挑'
                     yes.addEventListener('click', () => {
                         window.location.href = "http://www.taobao.com"
