@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>拯救小仙女</title>
+    <title>拯救小可爱</title>
     <style>
         * {
             margin: 0;
@@ -258,7 +258,7 @@
         <section class="mask">
             <div class="toptic">
                 <div class="tit">
-                    小仙女要过节,所以你需要按住水晶球<strong>0.97</strong>秒,水晶球将告诉你谁才是最可爱的人儿！
+                    还记得这个傻fufu的游戏,按住水晶球<strong>0.715</strong>秒,水晶球将告诉你谁才是最可爱的人儿！
                 </div>
                 <div class="yes">确定</div>
             </div>
@@ -336,7 +336,7 @@
             'touchend', () => {
                 newtime = new Date();
                 time = newtime - oldtime;
-                time = (time / 1000).toFixed(2)
+                time = (time / 1000).toFixed(3)
                 num++;
                 real++;
                 cc.style.top = num * 25 + 'px';
@@ -352,12 +352,12 @@
                     cc1.style.opacity = 1;
                     cc2.style.opacity = 0;
                 }
-                if (0.95 < time < 1) {
+                if (time < 0.718 && time > 0.713) {
                     mask.style.display = 'block';
-                    tit.innerHTML = '么么哒,生日快乐,妹！截图保存后发我领奖！'
-                    yes.innerHTML = '随便挑'
+                    tit.innerHTML = '你真的能按到啊?那就给你一个人生建议'
+                    yes.innerHTML = '好的我接受'
                     yes.addEventListener('click', () => {
-                        window.location.href = "http://www.taobao.com"
+                        window.location.href = "https://read.douban.com/"
                     }, false)
 
                 }
